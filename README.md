@@ -13,3 +13,4 @@ Grupo 3
 
 Leandro Resler, FAI-4275, leandro.resler@est.fi.uncoma.edu.ar, usuario github: leoresler
 ...
+Gloria Daniela Ramirez, FAI-4280, gloria.ramirez@est.fi.uncoma.edu.ar, usuario github: GloriaRamirez
