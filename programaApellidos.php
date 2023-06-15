@@ -57,6 +57,18 @@ function cargarJuegos () {
 return ($coleccionJuegos);
 }
 
+/**
+ * Funcion para armar arreglo asociativo de juego
+ * @param string $nombreJugadorCruz
+ * @param string $nombreJugadorCirculo
+ * @param int $puntosCruz
+ * @param int $puntosCirculo
+ * @return array
+ */
+function arregloJuego($nombreJugadorCruz, $nombreJugadorCirculo, $puntosCruz, $puntosCirculo) {
+    $juego= ["jugadorCruz" => "$nombreJugadorCruz", "jugadorCirculo" => "$nombreJugadorCirculo", "puntosCruz" => $puntosCruz, "puntosCirculo" => $puntosCirculo];
+return ($juego);
+}
 
 
 /**
