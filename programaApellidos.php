@@ -277,15 +277,16 @@ $juego = jugar();
 
 
 
-
 do {
+    seleccionarOpcion ();
+    echo "Seleccione una opcion:";
     $opcion = seleccionarOpcion();
-
     
-    switch ($opcion) /** es similar */
-    {
-        case 1: 
+    switch ($opcion) { /* La instruccion switch es similar a la estructura alternativa. Evalua una variable o expresión y ejecuta diferentes bloques de código según el valor que tenga  */
+        case 1:
             //completar qué secuencia de pasos ejecutar si el usuario elige la opción 1
+
+            
 
             break;
         case 2: 
