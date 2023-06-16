@@ -268,6 +268,42 @@ function ganadosPorSimbolo ($coleccionJuegos, $simbolo) {
     print_r($coleccionJuegos);
 }
 
+/**
+ * Muestra los datos de un juego
+ * @param array $coleccionJuegos
+ * @param int $nro
+ * @return void
+ */
+function datosDelJuego ($coleccionJuegos, $nro) {
+    //array $juegoAbuscar
+    //string $jugadorXenMayus, $jugadorOenMayus
+    $juegoAbuscar= $coleccionJuegos[$nro-1];
+    $jugadorXenMayus=strtoupper($juegoAbuscar["jugadorCruz"]);
+    $jugadorOenMayus= strtoupper($juegoAbuscar["jugadorCirculo"]);
+    if ($juegoAbuscar["puntosCruz"] == $juegoAbuscar["puntosCirculo"]) {
+        echo 
+            "\n***********************************
+               Juego TATETI: ".$nro." (empate)
+               Jugador X: ".$jugadorXenMayus." obtuvo ".$juegoAbuscar["puntosCruz"]." puntos
+               Jugador O: ".$jugadorOenMayus." obtuvo ".$juegoAbuscar["puntosCirculo"]. " puntos
+               ************************************\n";
+    }elseif ($juegoAbuscar["puntosCruz"] > $juegoAbuscar["puntosCirculo"]) {
+        echo 
+             "***********************************
+              Juego TATETI: ".$nro." (ganó X)
+              Jugador X: ".$jugadorXenMayus." obtuvo ".$juegoAbuscar["puntosCruz"]." puntos
+              Jugador O: ".$jugadorOenMayus." obtuvo ".$juegoAbuscar["puntosCirculo"]. " puntos
+              ************************************\n";
+    }else {
+        echo 
+             "***********************************
+              Juego TATETI: ".$nro." (ganó O)
+              Jugador X: ".$jugadorXenMayus." obtuvo ".$juegoAbuscar["puntosCruz"]." puntos
+              Jugador O: ".$jugadorOenMayus." obtuvo ".$juegoAbuscar["puntosCirculo"]. " puntos
+              ************************************\n";
+
+    }
+}
 /**************************************/
 /*********** PROGRAMA PRINCIPAL *******/
 /**************************************/
@@ -303,6 +339,7 @@ do {
             //completar qué secuencia de pasos ejecutar si el usuario elige la opción 2
             echo "Elija un número de juego: ";
             $nroJuego=trim(fgets(STDIN));
+            datosDelJuego($miColeccionJuegos,$nroJuego);
             
 
             break;
@@ -325,10 +362,6 @@ do {
         case 6:
             //completar qué secuencia de pasos ejecutar si el usuario elige la opción 6
             mostrarJuegosOrdenados($miColeccionJuegos);
-
-            break;
-        case 7:
-            //completar qué secuencia de pasos ejecutar si el usuario elige la opción 7
 
             break;
     }
