@@ -76,18 +76,6 @@ $opcion= solicitarNumeroEntre (1,7);
 return ($opcion);    
 }
 
-/**
- * Funcion para armar arreglo asociativo de juego
- * @param string $nombreJugadorCruz
- * @param string $nombreJugadorCirculo
- * @param int $puntosCruz
- * @param int $puntosCirculo
- * @return array
- */
-function arregloJuego($nombreJugadorCruz, $nombreJugadorCirculo, $puntosCruz, $puntosCirculo) {
-    $juego= ["jugadorCruz" => "$nombreJugadorCruz", "jugadorCirculo" => "$nombreJugadorCirculo", "puntosCruz" => $puntosCruz, "puntosCirculo" => $puntosCirculo];
-return ($juego);
-}
 
 /**
  * Agrega datos de una nuevo juego a la coleccion de juegos
@@ -97,7 +85,7 @@ return ($juego);
  */
 function agregarJuego ($coleccionJuegos, $juego) {
     $n=count($coleccionJuegos);
-    $coleccionJuegos[$n+1]=$juego;   
+    $coleccionJuegos[$n]=$juego;   
 return ($coleccionJuegos); 
 }
 
@@ -174,12 +162,13 @@ function primerJuegoGanado ($coleccionJuegos, $nombreJugador) {
  * @return void
  */
 function mostrarResumenJugador($resumenJugador, $nombreJugador) { /* $resumenJugador va a ser el retorno de la funcion obtenerResumenJugador */
+    $str=strtoupper($nombreJugador);
 
     echo "**********************\n";
-    echo "Jugador: " . $nombreJugador . "\n";
-    echo "Juegos Ganados: " . $resumenJugador["juegosGanados"] . " juegos" . "\n";
-    echo "juegos Perdidos " . $resumenJugador["juegosPerdidos"] . " juegos" . "\n";
-    echo "Juegos Empatados " . $resumenJugador["juegosEmpatados"] . " juegos" . "\n";
+    echo "Jugador: " . $str . "\n";
+    echo "Ganó: " . $resumenJugador["juegosGanados"] . " juegos" . "\n";
+    echo "Perdió " . $resumenJugador["juegosPerdidos"] . " juegos" . "\n";
+    echo "Empató " . $resumenJugador["juegosEmpatados"] . " juegos" . "\n";
     echo "Total de puntos acumulados: " . $resumenJugador["puntosAcumulados"] . " puntos" . "\n";
     echo "**********************\n";
 
@@ -288,12 +277,12 @@ function ganadosPorSimbolo ($coleccionJuegos, $simbolo) {
 
 
 //Inicialización de variables:
-
+$miColeccionJuegos= cargarJuegos();
 
 
 //Proceso:
 
-$juego = jugar();
+
 
 //print_r($juego);
 //imprimirResultado($juego);
@@ -301,19 +290,20 @@ $juego = jugar();
 
 
 do {
-    seleccionarOpcion ();
-    echo "Seleccione una opcion:";
-    $opcion = seleccionarOpcion();
+    $opcionMenu = seleccionarOpcion();
     
-    switch ($opcion) { /* La instruccion switch es similar a la estructura alternativa. Evalua una variable o expresión y ejecuta diferentes bloques de código según el valor que tenga  */
+    switch ($opcionMenu) { /* La instruccion switch es similar a la estructura alternativa. Evalua una variable o expresión y ejecuta diferentes bloques de código según el valor que tenga  */
         case 1:
             //completar qué secuencia de pasos ejecutar si el usuario elige la opción 1
-
-            
-
+            $juego = jugar();
+            $miColeccionJuegos= agregarJuego ($miColeccionJuegos,$juego);
+            print_r ($miColeccionJuegos);
             break;
-        case 2: 
+        case 2:
             //completar qué secuencia de pasos ejecutar si el usuario elige la opción 2
+            echo "Elija un número de juego: ";
+            $nroJuego=trim(fgets(STDIN));
+            
 
             break;
         case 3: 
@@ -326,10 +316,15 @@ do {
             break;
         case 5:
             //completar qué secuencia de pasos ejecutar si el usuario elige la opción 5
+            echo "Nombre del jugador: ";
+            $nombre= trim(fgets(STDIN));
+            $resumenPorJugador= obtenerResumenJugador($miColeccionJuegos,$nombre);
+            mostrarResumenJugador($resumenPorJugador,$nombre);
 
             break;
         case 6:
             //completar qué secuencia de pasos ejecutar si el usuario elige la opción 6
+            mostrarJuegosOrdenados($miColeccionJuegos);
 
             break;
         case 7:
@@ -337,4 +332,4 @@ do {
 
             break;
     }
-} while ($opcion != 7);
+} while ($opcionMenu != 7);
