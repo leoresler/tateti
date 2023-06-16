@@ -58,6 +58,76 @@ return ($coleccionJuegos);
 }
 
 
+/**
+ * Muestra el menú, solicita un numero de opcion y lo retorna
+ * @return $int
+ */
+function seleccionarOpcion () {
+    //int $opcion
+    echo "MENU DE OPCIONES: 
+          1)Jugar al tateti
+          2)Mostrar un juego 
+          3)Mostrar el primer juego ganador 
+          4)Mostrar porcentaje de juegos ganados 
+          5)Mostrar resumen de jugador 
+          6)Mostrar listado de juegos ordenado por jugador 
+          7)Salir";
+echo "\nSeleccione una opción: ";
+$opcion= solicitarNumeroEntre (1,7);        
+return ($opcion);    
+}
+
+
+/**
+ * Funcion para armar arreglo asociativo de juego
+ * @param string $nombreJugadorCruz
+ * @param string $nombreJugadorCirculo
+ * @param int $puntosCruz
+ * @param int $puntosCirculo
+ * @return array
+ */
+function arregloJuego($nombreJugadorCruz, $nombreJugadorCirculo, $puntosCruz, $puntosCirculo) {
+    $juego= ["jugadorCruz" => "$nombreJugadorCruz", "jugadorCirculo" => "$nombreJugadorCirculo", "puntosCruz" => $puntosCruz, "puntosCirculo" => $puntosCirculo];
+return ($juego);
+}
+
+/**
+ * Agrega datos de un nuevo juego a la coleccion de juegos
+ * @param array $coleccionJuegos
+ * @param array $juego
+ * @return array
+ */
+function agregarJuego ($coleccionJuegos, $juego) {
+    $n=count($coleccionJuegos);
+    $coleccionJuegos[$n+1]=$juego;   
+return ($coleccionJuegos); 
+}
+
+
+/**
+ * A partir de una coleccion de juegos y el nombre de un jugador retorna el indice del primer juego ganado por él, si no ganó muestra -1
+ * @param array $coleccionJuegos
+ * @param string $nombreJugador
+ * @return int
+ */
+function primerJuegoGanado ($coleccionJuegos, $nombreJugador) {
+    //int $primerVictoria
+    $n=count($coleccionJuegos);
+    $i=0;
+    $primerVictoria=-1;
+    while ($i<$n && 
+          !($coleccionJuegos[$i]["jugadorCruz"]==$nombreJugador && $coleccionJuegos[$i]["puntosCruz"]>$coleccionJuegos[$i]["puntosCirculo"])//Tambien podria ser $coleccionJuegos[$i]["puntosCruz"]>1
+          && !($coleccionJuegos[$i]["jugadorCirculo"]==$nombreJugador && $coleccionJuegos[$i]["puntosCirculo"]>$coleccionJuegos[$i]["puntosCruz"])) //Tambien podria ser $coleccionJuegos[$i]["puntosCirculo]>1
+         {
+          $i++;
+        }
+    
+    if ($i<$n){
+        $primerVictoria=$i;
+    };
+    return $primerVictoria;
+}
+
 
 /**
  * Retorna el resumen de un jugador en especifico
@@ -101,6 +171,7 @@ return ($coleccionJuegos);
     return $resumen;
 }
 
+
 /**
  * Muestra el resumen del jugador en pantalla
  * @param array $resumenJugador
@@ -119,67 +190,31 @@ function mostrarResumenJugador($resumenJugador, $nombreJugador) { /* $resumenJug
 
 }
 
-
-
 /**
- * Muestra el menú, solicita un numero de opcion y lo retorna
- * @return $int
+ * Funcion de ayuda para solicitarSimbolo
+ * @param string $mensaje
+ * @return string
  */
-function seleccionarOpcion () {
-    //int $opcion
-    echo "MENU DE OPCIONES: 
-          1)Jugar al tateti
-          2)Mostrar un juego 
-          3)Mostrar el primer juego ganador 
-          4)Mostrar porcentaje de juegos ganados 
-          5)Mostrar resumen de jugador 
-          6)Mostrar listado de juegos ordenado por jugador 
-          7)Salir"
-          ;
-do {
-    echo "\nSeleccione una opcion válida:";
-    $opcion=trim(fgets(STDIN));
-}
-while ($opcion < 1 || $opcion > 7);          
-return ($opcion);    
+function leerLinea($mensaje) {
+    echo $mensaje;
+    $mensaje = trim(fgets(STDIN));
+    return $mensaje;
 }
 
 
-
 /**
- * Solicita al usuario un número en el rango [$min,$max]
- * @param int $min
- * @param int $max
- * @return int 
+ * Solicita un simbolo (X u O) 
+ * @return array
  */
-function solicitarNumeroEntre($min, $max)
-{
-    //int $numero
-    $numero = trim(fgets(STDIN));
-    while (!is_int($numero) && !($numero >= $min && $numero <= $max)) {
-        echo "Debe ingresar un número entre " . $min . " y " . $max . ": ";
-        $numero = trim(fgets(STDIN));
+function solicitarSimbolo() {
+    $simbolo = leerLinea("Ingrese un símbolo (X u O): ");
+    
+    while ($simbolo !== "X" && $simbolo !== "O") {
+        echo "Símbolo inválido. Intente nuevamente." . "\n";
+        $simbolo = leerLinea("Ingrese un símbolo (X u O): ");
     }
-    return $numero;
-}
-
-
-
-/**
- * Muestra en pantalla el resultado del juego
- * @param array $juego
- */
-function imprimirResultado($juego)
-{
-    echo "**********************\n";
-    if ($juego["puntosCruz"] > $juego["puntosCirculo"]) {
-        echo $juego["jugadorCruz"] . " GANASTE " . $juego["puntosCruz"] . " puntos!!!!!\n";
-    } elseif ($juego["puntosCruz"] < $juego["puntosCirculo"]) {
-        echo $juego["jugadorCirculo"] . " GANASTE " . $juego["puntosCirculo"] . " puntos!!!!!\n";
-    } else {
-        echo "EMPATE ENTRE " . $juego["jugadorCruz"] . " y " . $juego["jugadorCirculo"] . ". " . $juego["puntosCruz"] . "  puntos para cada uno!!!!!\n";
-    }
-    echo "**********************\n";
+    
+    return $simbolo;
 }
 
 
@@ -204,33 +239,62 @@ function imprimirResultado($juego)
 }
 
 
-
 /**
- * Solicita un simbolo (X u O) 
- * @return array
+ * Dados una colección de juegos y un simbolo ingresado retorna la cantidad de juegos ganados por éste
+ * @param array $coleccionJuegos
+ * @param string $simbolo
+ * @return int
  */
-function solicitarSimbolo() {
-    $simbolo = leerLinea("Ingrese un símbolo (X u O): ");
-    
-    while ($simbolo !== "X" && $simbolo !== "O") {
-        echo "Símbolo inválido. Intente nuevamente." . "\n";
-        $simbolo = leerLinea("Ingrese un símbolo (X u O): ");
+function ganadosPorSimbolo ($coleccionJuegos, $simbolo) {
+    //int Si, $n
+    $i=0;
+    $cantGanadosPorSimbolo=0;
+    $n=count($coleccionJuegos);
+    if ($simbolo=="X" || $simbolo=="x") {
+        for ($i=0; $i<$n; $i++) {
+            if ($coleccionJuegos[$i]["puntosCruz"]>$coleccionJuegos[$i]["puntosCirculo"]) {
+                $cantGanadosPorSimbolo= $cantGanadosPorSimbolo+1;
+            }
+        }
+    }elseif ($simbolo=="O" || $simbolo=="o") {
+        for ($i=0; $i<$n; $i++) {
+            if ($coleccionJuegos[$i]["puntosCirculo"] > $coleccionJuegos[$i]["puntosCruz"]) {
+                $cantGanadosPorSimbolo= $cantGanadosPorSimbolo+1;
+            }
+        }
     }
-    
-    return $simbolo;
+    return ($cantGanadosPorSimbolo);
 }
 
-/**
- * Funcion de ayuda para solicitarSimbolo
- * @param string $mensaje
- * @return string
+
+
+
+
+
+/** 
+ * Convierte el nombre de un jugador en minusculas.
+ * @return string 
  */
-function leerLinea($mensaje) {
-    echo $mensaje;
-    $mensaje = trim(fgets(STDIN));
-    return $mensaje;
-}
+function solicitarJugador() {
+    //string $cadena
 
+    $cadena = "";
+    $auxiliar = false;
+
+    do {
+        echo "Ingrese nombre del jugador: \n";
+        $jugador = trim(fgets(STDIN));
+        $cadena = substr($jugador, 0, 1); /* substr devuelve una parte del string definida por los parametros $jugador, 0 (comienza desde el indice 0) y 1 (longitud y marca el limite del recorrido) */
+        if (ctype_alpha($cadena)) { /* ctype_alpha verifica si todos los caracteres de una cadena son letras alfabéticas. Devuelve true si la cadena es alfabética, de lo contrario, devuelve false. */
+            $jugador = strtolower($jugador); /* strtoupper convierte a la cadena de texto en minusculas */
+            $auxiliar = true;
+        } else {
+            echo "El nombre ingresado debe contener solamente letras del alfabeto. \n";
+        }
+    } while ($auxiliar == false);
+
+    return $jugador;
+}
 
 
 /**
@@ -266,11 +330,12 @@ function leerLinea($mensaje) {
 
 //Inicialización de variables:
 
+$miColeccionJuegos = cargarJuegos();
 
 
 //Proceso:
 
-$juego = jugar();
+
 
 //print_r($juego);
 //imprimirResultado($juego);
@@ -278,24 +343,51 @@ $juego = jugar();
 
 
 do {
-    seleccionarOpcion ();
-    echo "Seleccione una opcion:";
     $opcion = seleccionarOpcion();
     
     switch ($opcion) { /* La instruccion switch es similar a la estructura alternativa. Evalua una variable o expresión y ejecuta diferentes bloques de código según el valor que tenga  */
         case 1:
             //completar qué secuencia de pasos ejecutar si el usuario elige la opción 1
 
-            
+            $juego = jugar();
+            $todosLosJuegos = agregarJuego($miColeccionJuegos, $juego);
+            print_r($todosLosJuegos);
 
             break;
         case 2: 
             //completar qué secuencia de pasos ejecutar si el usuario elige la opción 2
 
+            echo "Ingrese un numero de juego: (1 a 10)\n";
+            $numero = trim(fgets(STDIN));
+
+            while ($numero < 1 || $numero > 10) {
+
+                echo "Numero invalido. Intentelo nuevamente.\n";
+                $numero = trim(fgets(STDIN));
+
+            }
+
+            $resultadoJuego = imprimirResultado($miColeccionJuegos[$juego]);
+            echo $resultadoJuego;
+            
+
             break;
         case 3: 
             //completar qué secuencia de pasos ejecutar si el usuario elige la opción 3
+            
+            $jugador = solicitarJugador();
+            $primerGanador = primerJuegoGanado($miColeccionJuegos, $jugador);
 
+            if ($primerGanador != -1) {
+
+                
+
+            } else {
+
+                echo "El jugador " . $jugador . " no ha ganado ningún juego.";
+
+            }
+            
             break;
         case 4:
             //completar qué secuencia de pasos ejecutar si el usuario elige la opción 4
@@ -307,10 +399,6 @@ do {
             break;
         case 6:
             //completar qué secuencia de pasos ejecutar si el usuario elige la opción 6
-
-            break;
-        case 7:
-            //completar qué secuencia de pasos ejecutar si el usuario elige la opción 7
 
             break;
     }

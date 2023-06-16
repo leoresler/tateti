@@ -7,7 +7,7 @@ Introduccion a la Programacion
 ## año 2023
 
 ## Nro de grupo
-Grupo 3
+Grupo 2
 
 ## Integrantes del grupo
 
