@@ -86,8 +86,34 @@ return ($opcion);
 function agregarJuego ($coleccionJuegos, $juego) {
     $n=count($coleccionJuegos);
     $coleccionJuegos[$n]=$juego;   
-return ($coleccionJuegos); 
+    return ($coleccionJuegos); 
 }
+
+/** 
+ * Convierte el nombre de un jugador en mayusculas.
+ * @return string 
+ */
+function solicitarJugador() {
+    //string $cadena
+
+    $cadena = "";
+    $auxiliar = false;
+
+    do {
+        echo "Ingrese nombre del jugador: \n";
+        $jugador = trim(fgets(STDIN));
+        $cadena = substr($jugador, 0, 1); /* substr devuelve una parte del string definida por los parametros $jugador, 0 (comienza desde el indice 0) y 1 (longitud y marca el limite del recorrido) */
+        if (ctype_alpha($cadena)) { /* ctype_alpha verifica si todos los caracteres de una cadena son letras alfabéticas. Devuelve true si la cadena es alfabética, de lo contrario, devuelve false. */
+            $jugador = strtoupper($jugador); /* strtoupper convierte a la cadena de texto en minusculas */
+            $auxiliar = true;
+        } else {
+            echo "El nombre ingresado debe contener solamente letras del alfabeto. \n";
+        }
+    } while ($auxiliar == false);
+
+    return $jugador;
+}
+
 
 /**
  * Muestra los datos de un juego
@@ -160,8 +186,8 @@ function mostrarPrimerJuegoGanado ($coleccionJuegos, $nombreJugador) {
         if ($primerJuegoGanado["puntosCruz"] > $primerJuegoGanado["puntosCirculo"]) {
             echo "\n***********************************\n";
             echo   "Juego TATETI: ".($laPrimerVictoria+1)." (ganó X)\n";
-            echo   "Jugador X:".strtoupper($primerJuegoGanado["jugadorCruz"]). " obtuvo ".$primerJuegoGanado["puntosCruz"]." puntos\n";
-            echo   "Jugador O:".strtoupper($primerJuegoGanado["jugadorCirculo"]). " obtuvo ".$primerJuegoGanado["puntosCirculo"]." puntos\n";
+            echo   "Jugador X: ".strtoupper($primerJuegoGanado["jugadorCruz"]). " obtuvo ".$primerJuegoGanado["puntosCruz"]." puntos\n";
+            echo   "Jugador O: ".strtoupper($primerJuegoGanado["jugadorCirculo"]). " obtuvo ".$primerJuegoGanado["puntosCirculo"]." puntos\n";
             echo   "***********************************\n" ;
         } elseif ($primerJuegoGanado["puntosCirculo"] > $primerJuegoGanado["puntosCruz"]) {
             echo "\n***********************************\n";
@@ -171,7 +197,7 @@ function mostrarPrimerJuegoGanado ($coleccionJuegos, $nombreJugador) {
             echo   "***********************************\n" ;                
         }
     }else {
-            echo "\nEl jugador ". strtoupper($nombreJugador)." no ganó ningún juego\n";
+            echo "El jugador ". strtoupper($nombreJugador)." no ganó ningún juego\n";
         }
 }
 
@@ -224,10 +250,9 @@ function mostrarPrimerJuegoGanado ($coleccionJuegos, $nombreJugador) {
  * @return void
  */
 function mostrarResumenJugador($resumenJugador, $nombreJugador) { /* $resumenJugador va a ser el retorno de la funcion obtenerResumenJugador */
-    $str=strtoupper($nombreJugador);
 
     echo "**********************\n";
-    echo "Jugador: " . $str . "\n";
+    echo "Jugador: " . $nombreJugador . "\n";
     echo "Ganó: " . $resumenJugador["juegosGanados"] . " juegos" . "\n";
     echo "Perdió " . $resumenJugador["juegosPerdidos"] . " juegos" . "\n";
     echo "Empató " . $resumenJugador["juegosEmpatados"] . " juegos" . "\n";
@@ -283,7 +308,7 @@ function solicitarSimbolo() {
 }
 
 /**
- * Dados una colección de juegos y un simbolo ingresado retorna la cantidad de juegos ganados por éste
+ * Dado una colección de juegos y un simbolo ingresado retorna la cantidad de juegos ganados por el mismo
  * @param array $coleccionJuegos
  * @param string $simbolo
  * @return int
@@ -309,6 +334,24 @@ function ganadosPorSimbolo ($coleccionJuegos, $simbolo) {
     return ($cantGanadosPorSimbolo);
 }
 
+
+/**
+ * Dado una colección de juegos y un simbolo ingresado retorna el porcentaje de juegos ganados por el mismo
+ * @param array $coleccionJuegos
+ * @param string $simboloJugador
+ * @return float
+ */
+
+function porcentajeGanados ($coleccionJuegos, $simboloJugador) {
+
+    $totalJuegos = count($coleccionJuegos);
+    $cantGanados = ganadosPorSimbolo($coleccionJuegos, $simboloJugador);
+    $porcentajeGanados = ($cantGanados / $totalJuegos) * 100;
+    return ($porcentajeGanados);
+
+}
+
+
 /**
  * Muestra los juegos ordenados por el nombre del jugador O
  * @param array $coleccionJuegos
@@ -330,6 +373,8 @@ function ganadosPorSimbolo ($coleccionJuegos, $simbolo) {
     print_r($coleccionJuegos);
 }
 
+
+
 /**************************************/
 /*********** PROGRAMA PRINCIPAL *******/
 /**************************************/
@@ -339,7 +384,7 @@ function ganadosPorSimbolo ($coleccionJuegos, $simbolo) {
 
 
 //Inicialización de variables:
-$miColeccionJuegos= cargarJuegos();
+$miColeccionJuegos = cargarJuegos();
 
 
 //Proceso:
@@ -356,40 +401,42 @@ do {
     
     switch ($opcionMenu) { /* La instruccion switch es similar a la estructura alternativa. Evalua una variable o expresión y ejecuta diferentes bloques de código según el valor que tenga  */
         case 1:
-            //completar qué secuencia de pasos ejecutar si el usuario elige la opción 1
+            
             $juego = jugar();
             $miColeccionJuegos= agregarJuego ($miColeccionJuegos,$juego);
             print_r ($miColeccionJuegos);
+
             break;
         case 2:
-            //completar qué secuencia de pasos ejecutar si el usuario elige la opción 2
+            
             echo "Elija un número de juego: ";
             $nroJuego=trim(fgets(STDIN));
             datosDelJuego($miColeccionJuegos,$nroJuego);
-            
 
             break;
         case 3: 
-            //completar qué secuencia de pasos ejecutar si el usuario elige la opción 3
-            echo "nombre: ";
-            $elJugador = trim(fgets(STDIN));
+            
+            $elJugador = solicitarJugador();
             mostrarPrimerJuegoGanado ($miColeccionJuegos, $elJugador);
 
             break;
         case 4:
             //completar qué secuencia de pasos ejecutar si el usuario elige la opción 4
         
+            $simboloElegido = solicitarSimbolo();
+            $porcentajeGanadosPorSimbolo = porcentajeGanados($miColeccionJuegos, $simboloElegido);
+            echo "El simbolo " . $simboloElegido . " gano el " . $porcentajeGanadosPorSimbolo . "% de los juegos ganados\n";
+
             break;
         case 5:
-            //completar qué secuencia de pasos ejecutar si el usuario elige la opción 5
-            echo "Nombre del jugador: ";
-            $nombre= trim(fgets(STDIN));
+            
+            $nombre= solicitarJugador();
             $resumenPorJugador= obtenerResumenJugador($miColeccionJuegos,$nombre);
             mostrarResumenJugador($resumenPorJugador,$nombre);
 
             break;
         case 6:
-            //completar qué secuencia de pasos ejecutar si el usuario elige la opción 6
+            
             mostrarJuegosOrdenados($miColeccionJuegos);
 
             break;
