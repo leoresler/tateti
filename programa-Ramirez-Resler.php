@@ -204,9 +204,10 @@ function leerLinea($mensaje) {
 
 /**
  * Solicita un simbolo (X u O) 
- * @return array
+ * @return string
  */
 function solicitarSimbolo() {
+    //string $simbolo
     $simbolo = leerLinea("Ingrese un símbolo (X u O): ");
     
     while ($simbolo !== "X" && $simbolo !== "O") {
@@ -332,8 +333,8 @@ function mostrarResumenJugador($resumenJugador, $nombreJugador) { /* $resumenJug
     echo "**********************\n";
     echo "Jugador: " . $nombreJugador . "\n";
     echo "Ganó: " . $resumenJugador["juegosGanados"] . " juegos" . "\n";
-    echo "Perdió " . $resumenJugador["juegosPerdidos"] . " juegos" . "\n";
-    echo "Empató " . $resumenJugador["juegosEmpatados"] . " juegos" . "\n";
+    echo "Perdió: " . $resumenJugador["juegosPerdidos"] . " juegos" . "\n";
+    echo "Empató: " . $resumenJugador["juegosEmpatados"] . " juegos" . "\n";
     echo "Total de puntos acumulados: " . $resumenJugador["puntosAcumulados"] . " puntos" . "\n";
     echo "**********************\n";
 
@@ -367,9 +368,10 @@ function mostrarResumenJugador($resumenJugador, $nombreJugador) { /* $resumenJug
 /**************************************/
 
 //Declaración de variables:
-//int
-//string
-//array
+//int $opcionMenu, $nroJuego
+//float $porcentajeGanadosPorSimbolo
+//string $nombre, $simboloElegido
+//array $miColeccionJuegos, $juego, $resumenPorJugador
 
 
 
@@ -395,7 +397,6 @@ do {
             
             $juego = jugar();
             $miColeccionJuegos= agregarJuego ($miColeccionJuegos,$juego);
-            print_r ($miColeccionJuegos); //borrar, no se pide en tp
 
             break;
         case 2:
