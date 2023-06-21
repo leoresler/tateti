@@ -7,7 +7,7 @@ include_once("tateti.php");
 
 /* Apellido, Nombre. Legajo. Carrera. mail. Usuario Github */
 /* Resler, Leandro. FAI-4275. TUDW. leandro.resler@est.fi.uncoma.edu.ar. usuario github: leoresler. */
-/* Gloria Daniela, Ramirez. FAI-4280. TUDW.  gloria.ramirez@est.fi.uncoma.edu.ar. usuario github: GloriaRamirez. */
+/* Ramirez,Gloria Daniela. FAI-4280. TUDW.  gloria.ramirez@est.fi.uncoma.edu.ar. usuario github: GloriaRamirez. */
 
 
 
@@ -17,7 +17,7 @@ include_once("tateti.php");
 
 
 /**
-*Inicializa datos de juegos, retorna colección de juegos
+* Colección de datos de juegos anteriores
 *@return $array
 */
 function cargarJuegos () {
@@ -58,36 +58,48 @@ return ($coleccionJuegos);
 }
 
 /**
- * Muestra el menú, solicita un numero de opcion y lo retorna
+ * Muestra el menú, solicita un número de opción y lo retorna
  * @return $int
  */
 function seleccionarOpcion () {
     //int $opcion
-    echo "MENU DE OPCIONES: 
+    echo "MENU DE OPCIONES: \n 
           1)Jugar al tateti
           2)Mostrar un juego 
           3)Mostrar el primer juego ganador 
           4)Mostrar porcentaje de juegos ganados 
           5)Mostrar resumen de jugador 
           6)Mostrar listado de juegos ordenado por jugador 
-          7)Salir";
+          7)Salir\n";
 echo "\nSeleccione una opción: ";
 $opcion= solicitarNumeroEntre (1,7);        
 return ($opcion);    
 }
 
-
 /**
- * Agrega datos de una nuevo juego a la coleccion de juegos
+ * Agrega datos de una nueva partida a la coleccion de juegos
  * @param array $coleccionJuegos
  * @param array $juego
  * @return array
  */
 function agregarJuego ($coleccionJuegos, $juego) {
-    $n=count($coleccionJuegos);
-    $coleccionJuegos[$n]=$juego;   
+    //int $n
+    $n=count($coleccionJuegos);   //Obtengo cuantos juegos tiene guardados el arreglo $coleccionJuegos
+    $coleccionJuegos[$n]=$juego;  //Agrego datos de un juego nuevo a la siguente posicion libre del arreglo  
     return ($coleccionJuegos); 
 }
+
+/**
+ * Convierte el nombre del jugador a minúsculas 
+ * @return string
+ */
+function nombreMinusculas () {
+    echo "Nombre del jugador: ";
+    $nombreJugador=trim(fgets(STDIN));
+    $jugadorMinusculas= strtolower($nombreJugador); //Función para pasar un string a minusculas
+    return ($jugadorMinusculas);
+}
+
 
 /** 
  * Convierte el nombre de un jugador en mayusculas.
@@ -181,7 +193,7 @@ function primerJuegoGanado ($coleccionJuegos, $nombreJugador) {
  */
 function mostrarPrimerJuegoGanado ($coleccionJuegos, $nombreJugador) {
     $laPrimerVictoria= primerJuegoGanado($coleccionJuegos, $nombreJugador);
-    if ($laPrimerVictoria>=1) {
+    if ($laPrimerVictoria>=0) {
         $primerJuegoGanado= $coleccionJuegos [$laPrimerVictoria];
         if ($primerJuegoGanado["puntosCruz"] > $primerJuegoGanado["puntosCirculo"]) {
             echo "\n***********************************\n";
@@ -415,8 +427,8 @@ do {
 
             break;
         case 3: 
-            
-            $elJugador = solicitarJugador();
+
+            $elJugador = nombreMinusculas ();
             mostrarPrimerJuegoGanado ($miColeccionJuegos, $elJugador);
 
             break;
