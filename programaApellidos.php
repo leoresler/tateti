@@ -281,6 +281,7 @@ function mostrarResumenJugador($resumenJugador, $nombreJugador) { /* $resumenJug
 function leerLinea($mensaje) {
     echo $mensaje;
     $mensaje = trim(fgets(STDIN));
+    $mensaje = strtoupper($mensaje);
     return $mensaje;
 }
 
@@ -433,7 +434,6 @@ do {
 
             break;
         case 4:
-            //completar qué secuencia de pasos ejecutar si el usuario elige la opción 4
         
             $simboloElegido = solicitarSimbolo();
             $porcentajeGanadosPorSimbolo = porcentajeGanados($miColeccionJuegos, $simboloElegido);
