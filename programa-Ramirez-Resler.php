@@ -22,25 +22,25 @@ include_once("tateti.php");
 */
 function cargarJuegos () {
     //array $coleccionJuegos 
-    $juego1 = ["jugadorCruz" => "majo", "jugadorCirculo" => "pepe", "puntosCruz" => 5, "puntosCirculo" => 0];
+    $juego1 = ["jugadorCruz" => "MAJO", "jugadorCirculo" => "PEPE", "puntosCruz" => 5, "puntosCirculo" => 0];
 
-    $juego2 = ["jugadorCruz" => "juan", "jugadorCirculo" => "majo", "puntosCruz" => 1, "puntosCirculo" => 1];
+    $juego2 = ["jugadorCruz" => "JUAN", "jugadorCirculo" => "MAJO", "puntosCruz" => 1, "puntosCirculo" => 1];
 
-    $juego3 = ["jugadorCruz" => "ana", "jugadorCirculo" => "lisa", "puntosCruz" => 1, "puntosCirculo" => 1];
+    $juego3 = ["jugadorCruz" => "ANA", "jugadorCirculo" => "LISA", "puntosCruz" => 1, "puntosCirculo" => 1];
 
-    $juego4 = ["jugadorCruz" => "lisa", "jugadorCirculo" => "juan", "puntosCruz" => 6, "puntosCirculo" => 0];
+    $juego4 = ["jugadorCruz" => "LISA", "jugadorCirculo" => "JUAN", "puntosCruz" => 6, "puntosCirculo" => 0];
 
-    $juego5 = ["jugadorCruz" => "majo", "jugadorCirculo" => "lisa", "puntosCruz" => 1, "puntosCirculo" => 1];
+    $juego5 = ["jugadorCruz" => "MAJO", "jugadorCirculo" => "LISA", "puntosCruz" => 1, "puntosCirculo" => 1];
 
-    $juego6 = ["jugadorCruz" => "ana", "jugadorCirculo" => "luis", "puntosCruz" => 5, "puntosCirculo" => 0];
+    $juego6 = ["jugadorCruz" => "ANA", "jugadorCirculo" => "LUIS", "puntosCruz" => 5, "puntosCirculo" => 0];
 
-    $juego7 = ["jugadorCruz" => "luis", "jugadorCirculo" => "juan", "puntosCruz" => 0, "puntosCirculo" => 6];
+    $juego7 = ["jugadorCruz" => "LUIS", "jugadorCirculo" => "JUAN", "puntosCruz" => 0, "puntosCirculo" => 6];
 
-    $juego8 = ["jugadorCruz" => "ana", "jugadorCirculo" => "juan", "puntosCruz" => 1, "puntosCirculo" => 1];
+    $juego8 = ["jugadorCruz" => "ANA", "jugadorCirculo" => "JUAN", "puntosCruz" => 1, "puntosCirculo" => 1];
 
-    $juego9 = ["jugadorCruz" => "ana", "jugadorCirculo" => "juan", "puntosCruz" => 5, "puntosCirculo" => 0];
+    $juego9 = ["jugadorCruz" => "ANA", "jugadorCirculo" => "JUAN", "puntosCruz" => 5, "puntosCirculo" => 0];
 
-    $juego10 = ["jugadorCruz" => "pepe", "jugadorCirculo" => "juan", "puntosCruz" => 0, "puntosCirculo" => 5];
+    $juego10 = ["jugadorCruz" => "PEPE", "jugadorCirculo" => "JUAN", "puntosCruz" => 0, "puntosCirculo" => 5];
     
     $coleccionJuegos =[];
     $coleccionJuegos [0] = $juego1;
@@ -85,8 +85,8 @@ return ($opcion);
 function agregarJuego ($coleccionJuegos, $juego) {
     //int $n
     $n=count($coleccionJuegos);   //Obtengo cuantos juegos tiene guardados el arreglo $coleccionJuegos
-    $juego["jugadorCruz"]= strtolower($juego["jugadorCruz"]);       //Con función strtolower paso nombre de jugador a minusculas
-    $juego["jugadorCirculo"]=strtolower($juego["jugadorCirculo"]);
+    $juego["jugadorCruz"]= strtoupper($juego["jugadorCruz"]);       //Con función strtolower paso nombre de jugador a minusculas
+    $juego["jugadorCirculo"]=strtoupper($juego["jugadorCirculo"]);
     $coleccionJuegos[$n]=$juego;  //Agrego datos de un juego nuevo a la siguente posicion libre del arreglo  
     return ($coleccionJuegos); 
 }
@@ -94,15 +94,18 @@ function agregarJuego ($coleccionJuegos, $juego) {
 /**
  * Muestra los datos de un juego elegido por el usuario
  * @param array $coleccionJuegos
- * @param int $nro
  */
-function datosDelJuego ($coleccionJuegos, $nro) {
+function datosDelJuego ($coleccionJuegos) {
     //array $juegoAbuscar
     //string $jugadorX, $jugadorO
     //int $puntosX, $puntosO
+    $cantJuegos= count ($coleccionJuegos);
+    echo "Elija un número de juego: ";
+    $nro= solicitarNumeroEntre(1,$cantJuegos);
+   
     $juegoAbuscar= $coleccionJuegos[$nro-1];               //Me quedo sólo con el juego solicitado 
-    $jugadorX=strtoupper($juegoAbuscar["jugadorCruz"]);    // Utilizo función strtoupper para guardar nombre de jugador en mayúscula
-    $jugadorO= strtoupper($juegoAbuscar["jugadorCirculo"]);
+    $jugadorX= $juegoAbuscar["jugadorCruz"];    // Utilizo función strtoupper para guardar nombre de jugador en mayúscula
+    $jugadorO= $juegoAbuscar["jugadorCirculo"];
     $puntosX=$juegoAbuscar["puntosCruz"];                  //Asigno a variable los puntos del jugador
     $puntosO=$juegoAbuscar["puntosCirculo"];
     if ($puntosX == $puntosO) {
@@ -162,13 +165,13 @@ function mostrarPrimerJuegoGanado ($coleccionJuegos) {
     //array $primerJuegoGanado
 
     echo "Nombre del jugador: ";
-    $jugador=strtolower(trim(fgets(STDIN)));                             //Asigno a $jugador el nombre en minúsculas
+    $jugador= strtoupper(trim(fgets(STDIN)));                             //Asigno a $jugador el nombre en minúsculas
     $primerVictoria= primerJuegoGanado($coleccionJuegos, $jugador);    //Obtengo el indice del juego ganado del jugador, si ganó
     if ($primerVictoria >= 0) {
 
         $primerJuegoGanado= $coleccionJuegos [$primerVictoria];        //Me quedo sólo con el juego en que ganó
-        $jugadorX= strtoupper($primerJuegoGanado["jugadorCruz"]);
-        $jugadorO= strtoupper($primerJuegoGanado["jugadorCirculo"]);
+        $jugadorX= $primerJuegoGanado["jugadorCruz"];
+        $jugadorO= $primerJuegoGanado["jugadorCirculo"];
         $puntosX= $primerJuegoGanado["puntosCruz"];
         $puntosO= $primerJuegoGanado["puntosCirculo"];
 
@@ -186,7 +189,7 @@ function mostrarPrimerJuegoGanado ($coleccionJuegos) {
             echo   "***********************************\n" ;                
         }
     }else {
-            echo "\nEl jugador ". strtoupper($jugador)." no ganó ningún juego\n";
+            echo "\nEl jugador ". $jugador." no ganó ningún juego\n";
         }
 }
 
@@ -401,10 +404,8 @@ do {
             break;
         case 2:
             //Muestra datos de un juego elegido
-
-            echo "Elija un número de juego: ";
-            $nroJuego=trim(fgets(STDIN));
-            datosDelJuego($miColeccionJuegos,$nroJuego);
+            
+            datosDelJuego($miColeccionJuegos);
 
             break;
         case 3: 
@@ -425,7 +426,7 @@ do {
             //Muestra un resumen de los juegos en los que participó un usuario
 
             echo "Nombre del jugador: ";
-            $nombre= strtolower(trim(fgets(STDIN)));
+            $nombre= trim(fgets(STDIN));
             $resumenPorJugador= obtenerResumenJugador($miColeccionJuegos,$nombre);
             mostrarResumenJugador($resumenPorJugador,$nombre);
 
