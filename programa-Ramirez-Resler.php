@@ -356,9 +356,12 @@ function mostrarResumenJugador($resumenJugador, $nombreJugador) { /* $resumenJug
 function comparador ($juego1, $juego2) {
     // int $orden
 
-    if ($juego1 > $juego2) {
+    $nombreJugador1 = $juego1["jugadorCirculo"];
+    $nombreJugador2 = $juego2["jugadorCirculo"];
+
+    if ($nombreJugador1 > $nombreJugador2) {
         $orden = 1;
-    } elseif ($juego1 < $juego2) {
+    } elseif ($nombreJugador1 < $nombreJugador2) {
         $orden = -1;
     } else {
         $orden = 0;
