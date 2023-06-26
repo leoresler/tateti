@@ -98,7 +98,8 @@ function agregarJuego ($coleccionJuegos, $juego) {
 function datosDelJuego ($coleccionJuegos) {
     //array $juegoAbuscar
     //string $jugadorX, $jugadorO
-    //int $puntosX, $puntosO
+    //int $puntosX, $puntosO, $cantJuegos, $nro
+
     $cantJuegos= count ($coleccionJuegos);
     echo "Elija un número de juego: ";
     $nro= solicitarNumeroEntre(1,$cantJuegos);
@@ -388,7 +389,7 @@ function comparador ($juego1, $juego2) {
 /**************************************/
 
 //Declaración de variables:
-//int $opcionMenu, $nroJuego
+//int $opcionMenu
 //float $porcentajeGanadosPorSimbolo
 //string $nombre, $simboloElegido
 //array $miColeccionJuegos, $juego, $resumenPorJugador
@@ -416,7 +417,7 @@ do {
             //Inicia una partida nueva del juego 
             
             $juego = jugar();
-            $miColeccionJuegos= agregarJuego ($miColeccionJuegos,$juego);
+            $miColeccionJuegos= agregarJuego($miColeccionJuegos,$juego);
 
             break;
         case 2:
@@ -428,7 +429,7 @@ do {
         case 3: 
             //Muestra el primer juego ganado de un jugador
 
-            mostrarPrimerJuegoGanado ($miColeccionJuegos);
+            mostrarPrimerJuegoGanado($miColeccionJuegos);
 
             break;
         case 4:
@@ -443,7 +444,7 @@ do {
             //Muestra un resumen de los juegos en los que participó un usuario
 
             echo "Nombre del jugador: ";
-            $nombre= trim(fgets(STDIN));
+            $nombre=strtoupper(trim(fgets(STDIN)));
             $resumenPorJugador= obtenerResumenJugador($miColeccionJuegos,$nombre);
             mostrarResumenJugador($resumenPorJugador,$nombre);
 
