@@ -343,6 +343,28 @@ function mostrarResumenJugador($resumenJugador, $nombreJugador) { /* $resumenJug
 
 }
 
+
+/**
+ * Funcion de comparacion para uasort
+ * @param string $juego1
+ * @param string $juego2
+ * @return int
+ */
+
+function comparador ($juego1, $juego2) {
+    // int $orden
+
+    if ($juego1 > $juego2) {
+        $orden = 1;
+    } elseif ($juego1 < $juego2) {
+        $orden = -1;
+    } else {
+        $orden = 0;
+    }
+    return ($orden);
+}
+
+
 /**
  * Muestra los juegos ordenados por el nombre del jugador O
  * @param array $coleccionJuegos
@@ -350,15 +372,9 @@ function mostrarResumenJugador($resumenJugador, $nombreJugador) { /* $resumenJug
  */
 
  function mostrarJuegosOrdenados($coleccionJuegos) {
-    // Función de comparacion
-    $comparador = function($juego1, $juego2) {
-        return strcmp($juego1["jugadorCirculo"], $juego2["jugadorCirculo"]);
-        /* Compara dos string y determina si son iguales o cuál es mayor o menor alfabéticamente. En este caso se utiliza para comparar los nombres de los jugadores de círculo.
-        La función strcmp devuelve un número negativo si $juego1 es menor que $juego2, cero si son iguales y un número positivo si $juego1 es mayor que $juego2. */
-    };
     
     // Ordena la colección de juegos utilizando el comparador
-    uasort($coleccionJuegos, $comparador); // utiliza el comparador para determinar el orden de los elementos en la colección
+    uasort($coleccionJuegos, 'comparador'); // utiliza el comparador para determinar el orden de los elementos en la colección
     // uasort: Ordena los elementos usando una funcion de comparacion definida por el usuario. Lo utilizamos para mantener el orden que nosotros mismos hicimos en el comparador.
     
     print_r($coleccionJuegos);
