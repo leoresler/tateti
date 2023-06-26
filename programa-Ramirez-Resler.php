@@ -294,6 +294,7 @@ function ganadosPorSimbolo ($coleccionJuegos, $simbolo) {
  function obtenerResumenJugador($coleccionJuegos, $nombreJugador) {
     $resumen = [
 
+        "nombreJugador" => $nombreJugador,
         "juegosGanados" => 0,
         "juegosPerdidos" => 0,
         "juegosEmpatados" => 0,
